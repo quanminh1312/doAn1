@@ -8,6 +8,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import com.example.doan1.R;
 import com.example.doan1.model.Manga.Manga;
 import com.squareup.picasso.Picasso;
@@ -25,15 +27,15 @@ public class MangaAdapter extends ArrayAdapter<Manga> {
         this.resource = resource;
         this.data = data;
     }
-    public View getView(int posotion, View contextView, ViewGroup parent)
+    @Override
+    public View getView(int position, View contextView, ViewGroup parent)
     {
         LayoutInflater inflater = this.context.getLayoutInflater();
         View customview = inflater.inflate(this.resource,null);
-        Manga manga = data.get(posotion);
-
+        Manga manga = data.get(position);
         ImageView imgHinh = (ImageView) customview.findViewById(R.id.imageView);
         TextView ten = (TextView) customview.findViewById(R.id.textView);
-        String url = "https://uploads.mangadex.org/cover/" + manga.getId() +"/" + manga.getUrlCover();
+        String url = "https://uploads.mangadex.org/covers/" + manga.getId() +"/" + manga.getUrlCover() +".512.jpg";
         Picasso.get().load(url).into(imgHinh);
         ten.setText(manga.getName());
         return customview;

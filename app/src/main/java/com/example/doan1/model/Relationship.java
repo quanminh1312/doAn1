@@ -1,8 +1,9 @@
 package com.example.doan1.model;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-public class Relationship {
+public class Relationship implements Serializable {
     private String id;
     private String type;
     private String related;

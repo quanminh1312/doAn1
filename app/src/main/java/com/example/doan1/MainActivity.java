@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -41,8 +42,6 @@ public class MainActivity extends AppCompatActivity {
     private List<Tag> MangaTag = new ArrayList<>();
     private List<Manga> MangaByPage = new ArrayList<>();
     private MangaAdapter adapter;
-    private ArrayAdapter<String> nameAdapter;
-    private List<String> MangaName = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,21 +49,18 @@ public class MainActivity extends AppCompatActivity {
         create();
         setEvent();
     }
+    private void updateListView()
+    {
+        adapter = new MangaAdapter(MainActivity.this,R.layout.mainpage,MangaByPage);
+        listView.setAdapter(adapter);
+    }
     private void GetMangaByPage(int page) {
         bus.getManga_list(page, null, null, null, null, null, null, null, null, new MyCallBack<List<Manga>>() {
             @Override
             public void onSuccess(List<Manga> result) {
-                MangaByPage = result;
+                MangaByPage = new ArrayList<>(result);
                 GetMangaCover(MangaByPage);
-                adapter.notifyDataSetChanged();
-                //MangaName create
-                MangaName.clear();
-                for (int i = 0;i<MangaByPage.size();i++)
-                {
-                    Manga manga = MangaByPage.get(i);
-                    MangaName.add(manga.getName());
-                }
-                nameAdapter.notifyDataSetChanged();
+                updateListView();
             }
             @Override
             public void onFailure(Throwable t) {
@@ -80,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(String result) {
                     tam.setUrlCover(result);
-                    adapter.notifyDataSetChanged();
+                    updateListView();
                 }
 
                 @Override
@@ -92,6 +88,9 @@ public class MainActivity extends AppCompatActivity {
     }
     private void create()
     {
+        listView = (ListView) findViewById(R.id.mangapage);
+        button = (Button)  findViewById(R.id.button);
+        button2 = (Button)  findViewById(R.id.button2);
         bus.getTag(new MyCallBack<List<Tag>>() {
             @Override
             public void onSuccess(List<Tag> result) {
@@ -105,14 +104,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         GetMangaByPage(Page);
-
-
-        listView = (ListView) findViewById(R.id.mangapage);
-        button = (Button)  findViewById(R.id.button);
-        button2 = (Button)  findViewById(R.id.button2);
-        adapter = new MangaAdapter(MainActivity.this,R.layout.mainpage,MangaByPage);
-        nameAdapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_1,MangaName);
-        listView.setAdapter(adapter);
     }
     private void setEvent()
     {
@@ -128,6 +119,12 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Page = Math.min((Page+10),100);
                 GetMangaByPage(Page);
+            }
+        });
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
             }
         });
     }

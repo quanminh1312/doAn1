@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-public class Manga implements Mangamodel, Serializable {
+public class Manga implements Serializable, Mangamodel {
     private String id;
     private String type;
     private String name;
@@ -57,6 +57,17 @@ public class Manga implements Mangamodel, Serializable {
         this.type = type;
     }
 
+    public Manga(String id, String type, String name, String urlCover, String cover) {
+        this.id = id;
+        this.type = type;
+        this.name = name;
+        this.urlCover = urlCover;
+        Cover = cover;
+    }
+    public Manga()
+    {
+
+    }
     public MangaAttributes getAttributes() {
         return mangaAttributes;
     }

@@ -2,10 +2,11 @@ package com.example.doan1.model.Manga;
 
 import com.example.doan1.model.Tag.Tag;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-public class MangaAttributes{
+public class MangaAttributes implements Serializable {
     private Map<String, String> title;
     private List<Map<String, String>> altTitles;
     private Map<String, String> description;
