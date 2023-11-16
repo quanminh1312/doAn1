@@ -4,17 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
-import com.google.gson.Gson;
-import com.squareup.picasso.Picasso;
+import com.example.doan1.adapter.ImageAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +19,7 @@ import java.util.List;
 public class Chapter extends AppCompatActivity {
     Intent intent;
     Bus buss = new Bus(this);
-    private MutableLiveData<List<String>> chapter = buss.getImagechapter();
+    //private MutableLiveData<List<String>> chapter = buss.getImagechapter();
     String chapterId;
     Button button;
     ListView listView;
@@ -42,23 +39,23 @@ public class Chapter extends AppCompatActivity {
                 finish();
             }
         });
-        buss.getchapterimage(chapterId);
+        //buss.getchapterimage(chapterId);
         listView = (ListView) findViewById(R.id.list);
-        chapter.observe(this, new Observer<List<String>>() {
-            @Override
-            public void onChanged(List<String> strings) {
-                if (strings != null)
-                {
-                    try {
-                        ArrayList<String> arrayList = new ArrayList<>(strings);
-                        String temp = strings.get(0);
-                        arrayList.remove(0);
-                        ImageAdapter adapter = new ImageAdapter(Chapter.this,R.layout.chapter_listview,arrayList,temp);
-                        listView.setAdapter(adapter);
-                    }
-                    catch (Exception e){}
-                }
-            }
-        });
+//        chapter.observe(this, new Observer<List<String>>() {
+//            @Override
+//            public void onChanged(List<String> strings) {
+//                if (strings != null)
+//                {
+//                    try {
+//                        ArrayList<String> arrayList = new ArrayList<>(strings);
+//                        String temp = strings.get(0);
+//                        arrayList.remove(0);
+//                        ImageAdapter adapter = new ImageAdapter(Chapter.this,R.layout.chapter_listview,arrayList,temp);
+//                        listView.setAdapter(adapter);
+//                    }
+//                    catch (Exception e){}
+//                }
+//            }
+//        });
     }
 }

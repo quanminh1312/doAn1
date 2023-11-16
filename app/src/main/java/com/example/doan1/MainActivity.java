@@ -9,12 +9,15 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Adapter;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.doan1.model.Cover.Cover;
+import com.example.doan1.adapter.MangaAdapter;
 import com.example.doan1.model.Manga.Manga;
 import com.example.doan1.model.Relationship;
 import com.example.doan1.model.Tag.Tag;
@@ -29,126 +32,110 @@ import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
+    ListView listView;
+    Button button, button2;
     static final int REQUEST_CODE = 1;
     private Bus bus = new Bus(this);
-    private List<Tag> tagList = new ArrayList<>();
-    private Manga manga = new Manga();
-    private Map<String,List<Map<String,String>>> listMangaChapter = new HashMap<>();
-    TextView textView;
-    Button button, button2,button3;
-
+    private int Page = 0;
     Gson gson = new Gson();
-    // MulTableLiveData field
-    private LiveData<Manga> mangaLiveData = bus.getMangaLiveData();
-    private LiveData<List<Tag>> listLiveDataTag = bus.getlistMutableLiveDataTag();
-    private MutableLiveData<Map<String,List<Map<String,String>>>> listMangaChapterLiveData = bus.getChapterListLiveData();
-    private LiveData<Cover> coverLiveData = bus.getCoverMutableLiveData();
-    private void create()
-    {
-        bus.getTag();
-        bus.getMangaRandom();
-        textView = (TextView) findViewById(R.id.textView);
-        button = (Button)  findViewById(R.id.button);
-        button2 = (Button)  findViewById(R.id.button2);
-        button3 = (Button) findViewById(R.id.button3);
-    }
-    private void setEvent()
-    {
-        // live data fetch data
-        mangaLiveData.observe(this, new Observer<Manga>() {
-            @Override
-            public void onChanged(Manga mangaa) {
-                if (mangaa != null)
-                {
-                    manga = mangaa;
-                    textView.setText(manga.getAttributes().getTitle().get("en"));
-                    List<Relationship> relationshipList = manga.getRelationships();
-                    if (relationshipList !=null && relationshipList.size()>=0)
-                    {
-                        for (int i=0; i< relationshipList.size(); i++)
-                        {
-                            if (relationshipList.get(i).getType().equals("cover_art"))
-                            {
-                                bus.getCover(relationshipList.get(i).getId());
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-        });
-        listLiveDataTag.observe(this, new Observer<List<Tag>>() {
-            @Override
-            public void onChanged(List<Tag> tagListt) {
-                if (tagListt != null)
-                {
-                    tagList = tagListt;
-                }
-            }
-        });
-        coverLiveData.observe(this, new Observer<Cover>() {
-            @Override
-            public void onChanged(Cover cover) {
-                if (cover != null) {
-                    ImageView imageView = (ImageView) findViewById(R.id.imageView);
-                    String url = "https://uploads.mangadex.org/covers/";
-                    url += manga.getId() + "/" + cover.getAttributes().getFileName() + ".512.jpg";
-                    Picasso.get().load(url).into(imageView);
-                }
-            }
-        });
-        listMangaChapterLiveData.observe(this, new Observer<Map<String, List<Map<String, String>>>>() {
-            @Override
-            public void onChanged(Map<String, List<Map<String, String>>> stringListMap) {
-                if (stringListMap != null)
-                {
-                    Toast.makeText(getApplication(), "co",Toast.LENGTH_LONG).show();
-                    listMangaChapter = stringListMap;
-                }
-            }
-        });
-
-        //test api fetch
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                create();
-            }
-        });
-        button2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (manga != null)
-                {
-                    bus.getMangaChapter(manga.getId());
-                }
-            }
-        });
-        button3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (listMangaChapter != null)
-                {
-
-                    List<String> keys = new ArrayList<>(listMangaChapter.keySet());
-                    Collections.reverse(keys);
-                    Map<String,List<Map<String,String>>> reversedHashMap = new HashMap<>();
-                    for (String key : keys) {
-                        reversedHashMap.put(key, listMangaChapter.get(key));
-                    }
-                    Intent intent = new Intent(MainActivity.this,ChapterList.class);
-                    String json = gson.toJson(reversedHashMap);
-                    intent.putExtra("chapterlist",json);
-                    startActivityForResult(intent,REQUEST_CODE);
-                }
-            }
-        });
-    }
+    private List<Tag> MangaTag = new ArrayList<>();
+    private List<Manga> MangaByPage = new ArrayList<>();
+    private MangaAdapter adapter;
+    private ArrayAdapter<String> nameAdapter;
+    private List<String> MangaName = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         create();
         setEvent();
+    }
+    private void GetMangaByPage(int page) {
+        bus.getManga_list(page, null, null, null, null, null, null, null, null, new MyCallBack<List<Manga>>() {
+            @Override
+            public void onSuccess(List<Manga> result) {
+                MangaByPage = result;
+                GetMangaCover(MangaByPage);
+
+
+
+                MangaName.clear();
+                for (int i = 0;i<MangaByPage.size();i++)
+                {
+                    Manga manga = MangaByPage.get(i);
+                    MangaName.add(manga.getName());
+                }
+                nameAdapter.notifyDataSetChanged();
+
+
+
+
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
+    }
+    private void GetMangaCover(List<Manga> mangaList) {
+        for (int i=0; i<mangaList.size();i++)
+        {
+            Manga tam = mangaList.get(i);
+            bus.getCover(tam.getCover(), new MyCallBack<String>() {
+                @Override
+                public void onSuccess(String result) {
+                    tam.setUrlCover(result);
+                    adapter.notifyDataSetChanged();
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+
+                }
+            });
+        }
+    }
+    private void create()
+    {
+        bus.getTag(new MyCallBack<List<Tag>>() {
+            @Override
+            public void onSuccess(List<Tag> result) {
+                MangaTag = result;
+
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
+        GetMangaByPage(Page);
+
+
+        listView = (ListView) findViewById(R.id.mangapage);
+        button = (Button)  findViewById(R.id.button);
+        button2 = (Button)  findViewById(R.id.button2);
+        adapter = new MangaAdapter(MainActivity.this,R.layout.mainpage,MangaByPage);
+        nameAdapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_1,MangaName);
+        listView.setAdapter(nameAdapter);
+    }
+    private void setEvent()
+    {
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Page = Math.max(0,(Page-10));
+                GetMangaByPage(Page);
+            }
+        });
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Page = Math.min((Page+10),100);
+                GetMangaByPage(Page);
+            }
+        });
     }
 }

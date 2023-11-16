@@ -1,4 +1,4 @@
-package com.example.doan1;
+package com.example.doan1.adapter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.doan1.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

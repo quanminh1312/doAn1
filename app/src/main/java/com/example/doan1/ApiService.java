@@ -42,15 +42,16 @@ public interface ApiService {
     @GET("at-home/server/{id}")
     Call<JsonObject>getimagechapter(@Path("id") String mangaId);
     @GET("manga")
-    Call<JsonObject>getMangaId(@Query("offset") int offset
-            , @Query("title") String title
-            , @Query("authorOrArtist") String author
-            , @Query("year") int year
-            , @Query("includedTags[]") ArrayList<Tag> included
-            , @Query("excludedTags[]") ArrayList<Tag> excluded
-            , @Query("status[]")ArrayList status
-            , @Query("ids[]") ArrayList ids
-            , @Query("includes[]") ArrayList includes);
+    Call<JsonObject>getMangaId(@Query("offset") Integer offset
+//            , @Query("title") String title
+//            , @Query("authorOrArtist") String author
+//            , @Query("year") Integer year
+//            , @Query("includedTags[]") ArrayList<Tag> included
+//            , @Query("excludedTags[]") ArrayList<Tag> excluded
+//            , @Query("status[]")ArrayList status
+//            , @Query("ids[]") ArrayList ids
+//            , @Query("includes[]") ArrayList includes
+                );
     @GET("author/{id}")
     Call<JsonObject>getAuthor(@Path("id") String authorId);
 }

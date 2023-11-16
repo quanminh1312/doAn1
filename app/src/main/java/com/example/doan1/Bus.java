@@ -1,14 +1,11 @@
 package com.example.doan1;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.doan1.model.Author.Author;
 import com.example.doan1.model.Author.AuthorAttributes;
-import com.example.doan1.model.Cover.Cover;
-import com.example.doan1.model.Cover.CoverAttributes;
 import com.example.doan1.model.Manga.Manga;
 import com.example.doan1.model.Manga.MangaAttributes;
 import com.example.doan1.model.Mangamodel;
@@ -17,9 +14,7 @@ import com.example.doan1.model.Tag.Tag;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -29,7 +24,6 @@ import java.util.Map;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.http.Query;
 
 public class Bus {
     private Context context;
@@ -37,50 +31,6 @@ public class Bus {
     public Bus(Context context) {
         this.context = context;
     }
-
-    //mulTable
-    private MutableLiveData<Manga> mangaLiveData = new MutableLiveData<>();
-
-    public MutableLiveData<Manga> getMangaLiveData() {
-        return mangaLiveData;
-    }
-    private  MutableLiveData<List<Tag>> listMutableLiveDataTag = new MutableLiveData<>();
-
-    public MutableLiveData<List<Tag>> getlistMutableLiveDataTag() {
-        return listMutableLiveDataTag;
-    }
-    private MutableLiveData<Cover> coverMutableLiveData = new MutableLiveData<>();
-
-    public MutableLiveData<Cover> getCoverMutableLiveData() {
-        return coverMutableLiveData;
-    }
-    private MutableLiveData<Map<String,List<Map<String,String>>>> chapterListLiveData = new MutableLiveData<>();
-
-    public MutableLiveData<Map<String,List<Map<String,String>>>> getChapterListLiveData() {
-        return chapterListLiveData;
-    }
-    private MutableLiveData<Manga> mangaById = new MutableLiveData<>();
-
-    public MutableLiveData<Manga> getMangaById() {
-        return mangaById;
-    }
-    private MutableLiveData<Author> authorMutableLiveData = new MutableLiveData<>();
-
-    public MutableLiveData<Author> getAuthorMutableLiveData() {
-        return authorMutableLiveData;
-    }
-
-    private MutableLiveData<List<Manga>> mangaList = new MutableLiveData<>();
-
-    public MutableLiveData<List<Manga>> getMangaList() {
-        return mangaList;
-    }
-    private  MutableLiveData<List<String>> imagechapter = new MutableLiveData<>();
-
-    public MutableLiveData<List<String>> getImagechapter() {
-        return imagechapter;
-    }
-
     private void ArrayToList(List<JsonObject> jsonList, JsonArray jsonArray) {
         for (int i = 0; i < jsonArray.size(); i++)
         {
@@ -101,9 +51,8 @@ public class Bus {
         }
         input.setRelationships(relationshipList);
     }
-
     //hàm chức năng gọi api
-    public void getTag() {
+    public void getTag(MyCallBack<List<Tag>> callback) {
         ApiService.apiservice.getTag().enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
@@ -118,23 +67,23 @@ public class Bus {
                         {
                             Tag tag = new Tag();
                             tag.setId(object.get("id").toString());
-                            tag.setName(object.get("attributes").getAsJsonObject().get("name").getAsJsonObject().get("en").toString());
+                            tag.setName(object.get("attributes").getAsJsonObject().get("name").getAsJsonObject().get("en").getAsString());
                             tagList.add(tag);
                         }
-                        listMutableLiveDataTag.postValue(tagList);
+                        callback.onSuccess(tagList);
                     }
                 }
                 else {
-                    listMutableLiveDataTag.postValue(null);
+                    callback.onFailure(null);
                 }
             }
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-                listMutableLiveDataTag.postValue(null);
+                callback.onFailure(null);
             }
         });
     }
-    public void getAuthor(String authorId) {
+    public void getAuthor(String authorId, MyCallBack<Author> callBack) {
         ApiService.apiservice.getAuthor(authorId).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
@@ -147,22 +96,22 @@ public class Bus {
                         JsonArray relationShip = jsonObject.get("relationships").getAsJsonArray();
                         setRelationShip(relationShip,author);
                         author.setAttributes(attributes);
-                        authorMutableLiveData.postValue(author);
+                        callBack.onSuccess(author);
                     }
                 }
                 else {
                     // Xử lý lỗi HTTP response
-                    authorMutableLiveData.postValue(null);
+                    callBack.onFailure(null);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-                authorMutableLiveData.postValue(null);
+                callBack.onFailure(null);
             }
         });
     }
-    public void getMangaRandom() {
+    public void getMangaRandom(MyCallBack<Manga> callBack) {
         ApiService.apiservice.getRandomManga().enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
@@ -175,21 +124,21 @@ public class Bus {
                         JsonArray relationShip = jsonObject.get("relationships").getAsJsonArray();
                         setRelationShip(relationShip,manga);
                         manga.setAttributes(attributes);
-                        mangaLiveData.postValue(manga);
+                        callBack.onSuccess(manga);
                     }
                 }
                 else {
                     // Xử lý lỗi HTTP response
-                    mangaLiveData.postValue(null);
+                    callBack.onFailure(null);
                 }
             }
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-                mangaLiveData.postValue(null);
+                callBack.onFailure(null);
             }
         });
     }
-    public void getMangaById(String mangaId) {
+    public void getMangaById(String mangaId, MyCallBack<Manga> callBack) {
         ApiService.apiservice.getManga(mangaId).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
@@ -202,48 +151,44 @@ public class Bus {
                         JsonArray relationShip = jsonObject.get("relationships").getAsJsonArray();
                         setRelationShip(relationShip,manga);
                         manga.setAttributes(attributes);
-                        mangaById.postValue(manga);
+                        callBack.onSuccess(manga);
                     }
                 }
                 else {
                     // Xử lý lỗi HTTP response
-                    mangaById.postValue(null);
+                    callBack.onFailure(null);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-                mangaById.postValue(null);
+                callBack.onFailure(null);
             }
         });
     }
-    public void getCover(String mangaId) {
+    public void getCover(String mangaId, MyCallBack<String> callBack) {
         ApiService.apiservice.getCover(mangaId).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 if (response.isSuccessful()) {
                     if (response.body().isJsonObject()) {
-                        JsonObject jsonObject = response.body().getAsJsonObject().get("data").getAsJsonObject();
-                        JsonObject atribute = jsonObject.get("attributes").getAsJsonObject();
-                        JsonArray relationship = jsonObject.get("relationships").getAsJsonArray();
-                        Cover cover = gson.fromJson(jsonObject,Cover.class);
-                        cover.setAttributes(gson.fromJson(atribute,CoverAttributes.class));
-                        setRelationShip(relationship,cover);
-                        coverMutableLiveData.postValue(cover);
+                        JsonObject jsonObject = response.body().getAsJsonObject().get("data").getAsJsonObject().get("attributes").getAsJsonObject();
+                        String filename = jsonObject.get("fileName").getAsString();
+                        callBack.onSuccess(filename);
                     }
                 }
                 else {
-                    coverMutableLiveData.postValue(null);
+                    callBack.onFailure(null);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-                    coverMutableLiveData.postValue(null);
+                    callBack.onFailure(null);
             }
         });
     }
-    public void getMangaChapter(String mangaId) {
+    public void getMangaChapter(String mangaId, MyCallBack<Map<String, List<Chapter>>> callBack) {
         ApiService.apiservice.getMangaAggregate(mangaId).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
@@ -252,39 +197,41 @@ public class Bus {
                         try {
                             JsonObject jsonObject = response.body().getAsJsonObject().get("volumes").getAsJsonObject();
                             Iterator<String> keys = jsonObject.keySet().iterator();
-                            Map<String, List<Map<String, String>>> stringListMap = new HashMap<>();
+                            Map<String, List<Chapter>> stringListMap = new HashMap<>();
                             while (keys.hasNext()) {
                                 String key = keys.next();
                                 JsonObject jsonObject1 = jsonObject.get(key).getAsJsonObject().get("chapters").getAsJsonObject();
                                 Iterator<String> keys2 = jsonObject1.keySet().iterator();
-                                List<Map<String, String>> list = new ArrayList<>();
+                                List<Chapter> list = new ArrayList<>();
                                 while (keys2.hasNext()) {
                                     String key2 = keys2.next();
                                     JsonObject object = jsonObject1.get(key2).getAsJsonObject();
-                                    Map<String, String> map = new HashMap<>();
-                                    map.put(object.get("chapter").toString(), object.get("id").toString());
-                                    list.add(map);
+                                    Chapter chapter = gson.fromJson(jsonObject,Chapter.class);
+                                    list.add(chapter);
                                 }
                                 stringListMap.put(key, list);
                             }
-                            chapterListLiveData.postValue(stringListMap);
+                            callBack.onSuccess(stringListMap);
                         }
-                        catch (Exception e){chapterListLiveData.postValue(null);}
+                        catch (Exception e)
+                        {
+                            callBack.onFailure(null);
+                        }
                     }
                 }
                 else {
                     // Xử lý lỗi HTTP response
-                    chapterListLiveData.postValue(null);
+                    callBack.onFailure(null);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-                chapterListLiveData.postValue(null);
+                callBack.onFailure(null);
             }
         });
     }
-    public void getchapterimage(String chapterId) {
+    public void getChapterImage(String chapterId, MyCallBack<List<String>> callback) {
         ApiService.apiservice.getimagechapter(chapterId).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
@@ -298,25 +245,28 @@ public class Bus {
                             for (int i = 0; i < image.size(); i++) {
                                 temp.add(image.get(i).getAsString());
                             }
-                            imagechapter.postValue(temp);
+                            callback.onSuccess(temp);
                         }
-                        catch (Exception e) {}
+                        catch (Exception e) {callback.onFailure(null);}
                     }
                 }
                 else {
                     // Xử lý lỗi HTTP response
-                    imagechapter.postValue(null);
+                    callback.onFailure(null);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-                imagechapter.postValue(null);
+                callback.onFailure(null);
             }
         });
     }
-    public void getManga_list(int offset, String title, String author, int year, ArrayList<Tag> included, ArrayList<Tag> excluded, ArrayList status, ArrayList ids, ArrayList includes) {
-        ApiService.apiservice.getMangaId(offset, title, author, year, included, excluded, status, ids, includes).enqueue(new Callback<JsonObject>() {
+    public void getManga_list(Integer offset, String title, String author, Integer year
+            , ArrayList<Tag> included, ArrayList<Tag> excluded
+            , ArrayList status, ArrayList ids, ArrayList includes
+            , MyCallBack<List<Manga>> callBack) {
+        ApiService.apiservice.getMangaId(offset).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 if (response.isSuccessful()) {
@@ -332,21 +282,34 @@ public class Bus {
                                 JsonArray relationShip = jsonObject.get("relationships").getAsJsonArray();
                                 setRelationShip(relationShip, manga);
                                 manga.setAttributes(attributes);
+
+                                //get cover
+                                for (int j = 0; j < relationShip.size(); j++) {
+                                    JsonObject object = relationShip.get(j).getAsJsonObject();
+                                    if (object.get("type").getAsString().equals("cover_art"))
+                                    {
+                                        manga.setCover(object.get("id").getAsString());
+                                        break;
+                                    }
+                                }
+                                //get name
+                                String name = attribute.get("title").getAsJsonObject().get("en").getAsString();
+                                manga.setName(name);
                                 mangaList11.add(manga);
                             }
-                            mangaList.postValue(mangaList11);
+                            callBack.onSuccess(mangaList11);
                         }
                         catch (Exception e){}
                     }
                     else{
-                        mangaList.postValue(null);
+                        callBack.onFailure(null);
                     }
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-                mangaList.postValue(null);
+                callBack.onFailure(null);
             }
         });
     }

@@ -9,6 +9,34 @@ import java.util.Map;
 public class Manga implements Mangamodel {
     private String id;
     private String type;
+    private String name;
+    private String urlCover;
+    private String Cover;
+
+    public String getCover() {
+        return Cover;
+    }
+
+    public void setCover(String cover) {
+        Cover = cover;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getUrlCover() {
+        return urlCover;
+    }
+
+    public void setUrlCover(String urlCover) {
+        this.urlCover = urlCover;
+    }
+
     private MangaAttributes mangaAttributes;
     private List<Relationship> listRelationships;
 
