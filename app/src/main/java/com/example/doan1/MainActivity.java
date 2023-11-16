@@ -1,44 +1,28 @@
 package com.example.doan1;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.example.doan1.adapter.MangaAdapter;
 import com.example.doan1.model.Manga.Manga;
-import com.example.doan1.model.Relationship;
+import com.example.doan1.model.StaticManga;
 import com.example.doan1.model.Tag.Tag;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     ListView listView;
     Button button, button2;
-    static final int REQUEST_CODE = 1;
+    TextView textView;
     private Bus bus = new Bus(this);
     private int Page = 0;
-    Gson gson = new Gson();
     private List<Tag> MangaTag = new ArrayList<>();
     private List<Manga> MangaByPage = new ArrayList<>();
     private MangaAdapter adapter;
@@ -91,6 +75,8 @@ public class MainActivity extends AppCompatActivity {
         listView = (ListView) findViewById(R.id.mangapage);
         button = (Button)  findViewById(R.id.button);
         button2 = (Button)  findViewById(R.id.button2);
+        textView = (TextView) findViewById(R.id.textView2);
+        textView.setText(String.valueOf(Page / 10 + 1));
         bus.getTag(new MyCallBack<List<Tag>>() {
             @Override
             public void onSuccess(List<Tag> result) {
@@ -111,20 +97,24 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Page = Math.max(0,(Page-10));
+                textView.setText(String.valueOf(Page / 10 + 1));
                 GetMangaByPage(Page);
             }
         });
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Page = Math.min((Page+10),100);
+                Page = Math.min((Page+10),1000);
+                textView.setText(String.valueOf(Page / 10 + 1));
                 GetMangaByPage(Page);
             }
         });
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
+                StaticManga.setManga(MangaByPage.get(i));
+                Intent intent = new Intent(MainActivity.this,ChapterList.class);
+                startActivity(intent);
             }
         });
     }

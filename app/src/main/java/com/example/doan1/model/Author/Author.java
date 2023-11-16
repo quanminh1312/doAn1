@@ -1,5 +1,5 @@
 package com.example.doan1.model.Author;
-import com.example.doan1.model.Mangamodel;
+import com.example.doan1.Mangamodel;
 import com.example.doan1.model.Relationship;
 import java.util.Map;
 import java.util.List;

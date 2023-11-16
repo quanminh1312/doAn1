@@ -1,4 +1,6 @@
-package com.example.doan1.model;
+package com.example.doan1;
+
+import com.example.doan1.model.Relationship;
 
 import java.util.List;
 

@@ -1,17 +1,11 @@
 package com.example.doan1;
-import androidx.annotation.Nullable;
 
 import retrofit2.http.Path;
-import com.example.doan1.model.Chapter.Chapter;
-import com.example.doan1.model.Manga.Manga;
-import com.example.doan1.model.Tag.Tag;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import java.util.ArrayList;
-import java.util.List;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

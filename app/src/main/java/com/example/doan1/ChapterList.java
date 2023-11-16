@@ -20,8 +20,6 @@ import java.util.List;
 import java.util.Map;
 
 public class ChapterList extends AppCompatActivity {
-    static final int REQUEST_CODE = 1;
-    Intent intent;
     String json;
     List<String> chapterListAdap = new ArrayList<>();
     List<String> chapterlistid = new ArrayList<>();
@@ -32,8 +30,6 @@ public class ChapterList extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chapterlist);
-        intent = getIntent();
-        json = intent.getStringExtra("chapterlist");
         listView = (ListView) findViewById(R.id.listview1);
         button = (Button) findViewById(R.id.trove_1);
         button.setOnClickListener(new View.OnClickListener() {
@@ -67,8 +63,7 @@ public class ChapterList extends AppCompatActivity {
                         try {
 
                             Intent intent = new Intent(ChapterList.this,Chapter.class);
-                            intent.putExtra("chapter",chapterlistid.get(i));
-                            startActivityForResult(intent,REQUEST_CODE);
+                            startActivity(intent);
                         }
                         catch (Exception e){}
                     }

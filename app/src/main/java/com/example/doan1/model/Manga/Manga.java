@@ -1,11 +1,9 @@
 package com.example.doan1.model.Manga;
-import com.example.doan1.model.Mangamodel;
+import com.example.doan1.Mangamodel;
 import com.example.doan1.model.Relationship;
-import com.example.doan1.model.Tag.Tag;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 
 public class Manga implements Serializable, Mangamodel {
     private String id;
