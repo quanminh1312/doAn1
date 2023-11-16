@@ -3,10 +3,11 @@ import com.example.doan1.model.Mangamodel;
 import com.example.doan1.model.Relationship;
 import com.example.doan1.model.Tag.Tag;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-public class Manga implements Mangamodel {
+public class Manga implements Mangamodel, Serializable {
     private String id;
     private String type;
     private String name;

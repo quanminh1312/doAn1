@@ -56,9 +56,8 @@ public class MainActivity extends AppCompatActivity {
             public void onSuccess(List<Manga> result) {
                 MangaByPage = result;
                 GetMangaCover(MangaByPage);
-
-
-
+                adapter.notifyDataSetChanged();
+                //MangaName create
                 MangaName.clear();
                 for (int i = 0;i<MangaByPage.size();i++)
                 {
@@ -66,13 +65,7 @@ public class MainActivity extends AppCompatActivity {
                     MangaName.add(manga.getName());
                 }
                 nameAdapter.notifyDataSetChanged();
-
-
-
-
-                adapter.notifyDataSetChanged();
             }
-
             @Override
             public void onFailure(Throwable t) {
 
@@ -119,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
         button2 = (Button)  findViewById(R.id.button2);
         adapter = new MangaAdapter(MainActivity.this,R.layout.mainpage,MangaByPage);
         nameAdapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_1,MangaName);
-        listView.setAdapter(nameAdapter);
+        listView.setAdapter(adapter);
     }
     private void setEvent()
     {

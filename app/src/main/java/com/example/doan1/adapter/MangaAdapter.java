@@ -25,7 +25,6 @@ public class MangaAdapter extends ArrayAdapter<Manga> {
         this.resource = resource;
         this.data = data;
     }
-
     public View getView(int posotion, View contextView, ViewGroup parent)
     {
         LayoutInflater inflater = this.context.getLayoutInflater();
