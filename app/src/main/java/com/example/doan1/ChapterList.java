@@ -24,6 +24,8 @@ import com.squareup.picasso.Picasso;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -102,8 +104,14 @@ public class ChapterList extends AppCompatActivity {
                         // Duyệt qua từng chapter trong List
                         for (com.example.doan1.model.Chapter.Chapter chapterTemp : temp) {
                             chapters.add(chapterTemp);
+                        }
+                        //sort lại chapter
+
+                        //Duyệt qua từng chapter trong List
+                        for (com.example.doan1.model.Chapter.Chapter chapterTemp : chapters) {
                             chapterListAdap.add(chapterTemp.getName());
                         }
+
                     }
                     updateListView();
                 }
