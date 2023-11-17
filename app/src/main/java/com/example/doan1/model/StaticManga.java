@@ -3,6 +3,7 @@ package com.example.doan1.model;
 import android.widget.ListView;
 
 import com.example.doan1.Chapter;
+import com.example.doan1.model.Chapter.ChapterAttributes;
 import com.example.doan1.model.Manga.Manga;
 import com.example.doan1.model.Tag.Tag;
 
@@ -10,9 +11,8 @@ import java.util.List;
 
 public class StaticManga {
     static Manga manga;
-    static Chapter chapter;
+    static com.example.doan1.model.Chapter.Chapter chapter;
     static List<Tag> tags;
-
     public static List<Tag> getTags() {
         return tags;
     }
@@ -21,11 +21,11 @@ public class StaticManga {
         StaticManga.tags = tags;
     }
 
-    public static Chapter getChapter() {
+    public static com.example.doan1.model.Chapter.Chapter getChapter() {
         return chapter;
     }
 
-    public static void setChapter(Chapter chapter) {
+    public static void setChapter(com.example.doan1.model.Chapter.Chapter chapter) {
         StaticManga.chapter = chapter;
     }
 

@@ -6,6 +6,7 @@ import com.example.doan1.ApiService;
 import com.example.doan1.MyCallBack;
 import com.example.doan1.model.Author.Author;
 import com.example.doan1.model.Author.AuthorAttributes;
+import com.example.doan1.model.Chapter.Chapter;
 import com.example.doan1.model.Manga.Manga;
 import com.example.doan1.model.Manga.MangaAttributes;
 import com.example.doan1.Mangamodel;
@@ -211,7 +212,7 @@ public class Bus {
             }
         });
     }
-    public void getMangaChapter(String mangaId, MyCallBack<Map<String, List<Chapter>>> callBack) {
+    public void getMangaChapter(String mangaId, MyCallBack<Map<String, List<com.example.doan1.model.Chapter.Chapter>>> callBack) {
         ApiService.apiservice.getMangaAggregate(mangaId).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
@@ -220,7 +221,7 @@ public class Bus {
                         try {
                             JsonObject jsonObject = response.body().getAsJsonObject().get("volumes").getAsJsonObject();
                             Iterator<String> keys = jsonObject.keySet().iterator();
-                            Map<String, List<Chapter>> stringListMap = new HashMap<>();
+                            Map<String, List<com.example.doan1.model.Chapter.Chapter>> stringListMap = new HashMap<>();
                             while (keys.hasNext()) {
                                 String key = keys.next();
                                 JsonObject jsonObject1 = jsonObject.get(key).getAsJsonObject().get("chapters").getAsJsonObject();
@@ -228,9 +229,8 @@ public class Bus {
                                 List<Chapter> list = new ArrayList<>();
                                 while (keys2.hasNext()) {
                                     String key2 = keys2.next();
-                                    JsonObject object = jsonObject1.get(key2).getAsJsonObject();
-                                    Chapter chapter = gson.fromJson(jsonObject,Chapter.class);
-                                    list.add(chapter);
+                                    String id =  jsonObject1.get(key2).getAsJsonObject().get("id").getAsString();
+                                    list.add(new Chapter(id,key2));
                                 }
                                 stringListMap.put(key, list);
                             }

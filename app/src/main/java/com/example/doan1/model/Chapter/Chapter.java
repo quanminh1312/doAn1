@@ -4,11 +4,35 @@ import com.example.doan1.model.Relationship;
 
 import java.util.List;
 
-public class Chapter implements Mangamodel{
+public class Chapter {
     private String id;
     private String type;
-    private ChapterAttributes chapterAttributes;
-    private List<Relationship> listRelationships;
+
+    public String getType() {
+        return type;
+    }
+
+    public Chapter(String id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+    public Chapter()
+    {
+
+    }
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    private String name;
     public String getId() {
         return id;
     }
@@ -17,25 +41,4 @@ public class Chapter implements Mangamodel{
         this.id = id;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-    public ChapterAttributes getAttributes() {
-        return chapterAttributes;
-    }
-
-    public void setAttributes(ChapterAttributes attributes) {
-        this.chapterAttributes = attributes;
-    }
-    public List<Relationship> getRelationships() {
-        return listRelationships;
-    }
-    @Override
-    public void setRelationships(List<Relationship> relationships) {
-        this.listRelationships = relationships;
-    }
 }
