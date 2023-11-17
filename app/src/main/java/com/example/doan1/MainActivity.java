@@ -81,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSuccess(List<Tag> result) {
                 MangaTag = result;
+                StaticManga.setTags(MangaTag);
 
             }
 

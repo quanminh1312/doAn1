@@ -124,6 +124,17 @@ public class Bus {
                         JsonArray relationShip = jsonObject.get("relationships").getAsJsonArray();
                         setRelationShip(relationShip,manga);
                         manga.setAttributes(attributes);
+
+                        List<Tag> tags = manga.getAttributes().getTags();
+                        JsonArray tagsName= attribute.get("tags").getAsJsonArray();
+                        for (int i=0; i<tagsName.size();i++)
+                        {
+                            String name = tagsName.get(i).getAsJsonObject().get("attributes").getAsJsonObject().get("name").getAsJsonObject().get("en").getAsString();
+                            tags.get(i).setName(name);
+                        }
+                        manga.getAttributes().setTags(tags);
+
+
                         callBack.onSuccess(manga);
                     }
                 }
@@ -151,6 +162,18 @@ public class Bus {
                         JsonArray relationShip = jsonObject.get("relationships").getAsJsonArray();
                         setRelationShip(relationShip,manga);
                         manga.setAttributes(attributes);
+
+
+                        List<Tag> tags = manga.getAttributes().getTags();
+                        JsonArray tagsName= attribute.get("tags").getAsJsonArray();
+                        for (int i=0; i<tagsName.size();i++)
+                        {
+                            String name = tagsName.get(i).getAsJsonObject().get("attributes").getAsJsonObject().get("name").getAsJsonObject().get("en").getAsString();
+                            tags.get(i).setName(name);
+                        }
+                        manga.getAttributes().setTags(tags);
+
+
                         callBack.onSuccess(manga);
                     }
                 }
@@ -292,6 +315,18 @@ public class Bus {
                                         break;
                                     }
                                 }
+
+                                //get tag name
+                                List<Tag> tags = manga.getAttributes().getTags();
+                                JsonArray tagsName= attribute.get("tags").getAsJsonArray();
+                                for (int j=0; j<tagsName.size();j++)
+                                {
+                                    String name = tagsName.get(j).getAsJsonObject().get("attributes").getAsJsonObject().get("name").getAsJsonObject().get("en").getAsString();
+                                    tags.get(j).setName(name);
+                                }
+                                manga.getAttributes().setTags(tags);
+
+
                                 //get name
                                 String name = attribute.get("title").getAsJsonObject().get("en").getAsString();
                                 manga.setName(name);
