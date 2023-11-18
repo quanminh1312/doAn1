@@ -6,6 +6,22 @@
     android:layout_height="match_parent"
     tools:context=".User_Page">
 
+    <TextView
+        android:id="@+id/return_link2"
+        android:layout_width="411dp"
+        android:layout_height="48dp"
+        android:clickable="true"
+        android:minHeight="48dp"
+        android:text="Return  "
+        android:textAlignment="textEnd"
+        android:textColor="@color/design_default_color_primary"
+        android:textSize="25dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/listview_user"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/usertoolbar" />
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/usertoolbar"
         android:layout_width="match_parent"
@@ -37,10 +53,11 @@
         app:layout_constraintBottom_toBottomOf="@+id/username"
         app:layout_constraintEnd_toEndOf="parent"
         tools:srcCompat="@tools:sample/avatars" />
+
     <ListView
         android:id="@+id/listview_user"
-        android:layout_width="409dp"
-        android:layout_height="666dp"
+        android:layout_width="416dp"
+        android:layout_height="628dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

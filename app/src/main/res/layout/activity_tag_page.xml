@@ -7,4 +7,26 @@
     android:layout_height="match_parent"
     tools:context=".Tag_Page">
 
-  </androidx.constraintlayout.widget.ConstraintLayout>
+  <LinearLayout
+      android:layout_width="412dp"
+      android:layout_height="730dp"
+      android:layout_marginBottom="1dp"
+      android:orientation="vertical"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent">
+
+    <TextView
+        android:id="@+id/return_link2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:minHeight="48dp"
+        android:text="Return  "
+        android:textAlignment="textEnd"
+        android:textColor="@color/design_default_color_primary"
+        android:textSize="25dp"
+        android:textStyle="bold" />
+  </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
