@@ -1,9 +1,14 @@
 package com.example.doan1;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -18,6 +23,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+    private RecyclerView recyclerView;
+    private UserAdapter userAdapter;
+    private ArrayList<User_Page> userList;
     ListView listView;
     Button button, button2;
     TextView textView;
@@ -30,8 +38,47 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setSupportActionBar(findViewById(R.id.toolbar));
+        recyclerView = findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        userList = new ArrayList<>();
+        userAdapter = new UserAdapter(userList);
+        recyclerView.setAdapter(userAdapter);
         create();
         setEvent();
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        int id = item.getItemId();
+        // Handle menu item clicks
+        if (id == R.id.Login_item) {
+            // Handle the "Đăng Nhập" item click
+            Intent intent_log = new Intent(MainActivity.this, Login_Page.class);
+            startActivity(intent_log);
+            return true;
+        } else if (id == R.id.register_item) {
+            // Handle the "Đăng ký" item click
+            Intent intent_reg = new Intent(MainActivity.this, Register_Page.class);
+            startActivity(intent_reg);
+            return true;
+        } else if (id == R.id.tag_item) {
+            // Handle the "Tìm Kiếm" item click
+            Intent intent_tag = new Intent(MainActivity.this, Tag_Page.class);
+            startActivity(intent_tag);
+            return true;
+        } else if (id == R.id.rank_item) {
+            // Handle the "Xếp hạng" item click
+            Intent intent_rank = new Intent(MainActivity.this, Rank_Page.class);
+            startActivity(intent_rank);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
     private void updateListView()
     {
@@ -72,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
     }
     private void create()
     {
-        listView = (ListView) findViewById(R.id.mangapage);
+        listView = (ListView) findViewById(R.id.list_view);
         button = (Button)  findViewById(R.id.button);
         button2 = (Button)  findViewById(R.id.button2);
         textView = (TextView) findViewById(R.id.textView2);
