@@ -58,18 +58,18 @@ public class User_Page extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        // Handle menu item clicks
-//         if (id == R.id.tag_item) {
-//            // Handle the "Tìm Kiếm" item click
-//            Intent intent_tag = new Intent(User_Page.this, Tag_Page.class);
-//            startActivity(intent_tag);
-//            return true;
-//        } else if (id == R.id.rank_item) {
-//            // Handle the "Xếp hạng" item click
-//            Intent intent_rank = new Intent(User_Page.this, Rank_Page.class);
-//            startActivity(intent_rank);
-//            return true;
-//        }
+         //Handle menu item clicks
+         if (id == R.id.tag_item) {
+            // Handle the "Tìm Kiếm" item click
+            Intent intent_tag = new Intent(User_Page.this, Tag_Page.class);
+            startActivity(intent_tag);
+            return true;
+        } else if (id == R.id.rank_item) {
+            // Handle the "Xếp hạng" item click
+            Intent intent_rank = new Intent(User_Page.this, Rank_Page.class);
+            startActivity(intent_rank);
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 }

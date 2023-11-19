@@ -285,11 +285,9 @@ public class Bus {
             }
         });
     }
-    public void getManga_list(Integer offset, String title, String author, Integer year
-            , ArrayList<Tag> included, ArrayList<Tag> excluded
-            , ArrayList status, ArrayList ids, ArrayList includes
-            , MyCallBack<List<Manga>> callBack) {
-        ApiService.apiservice.getMangaId(offset).enqueue(new Callback<JsonObject>() {
+    Callback<JsonObject> callbackMangaList(MyCallBack<List<Manga>> callBack)
+    {
+        Callback<JsonObject> temp = new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 if (response.isSuccessful()) {
@@ -328,13 +326,18 @@ public class Bus {
 
 
                                 //get name
-                                String name = attribute.get("title").getAsJsonObject().get("en").getAsString();
-                                manga.setName(name);
+                                try {
+                                    String name = attribute.get("title").getAsJsonObject().get("en").getAsString();
+                                    manga.setName(name);
+                                } catch (Exception e){}
                                 mangaList11.add(manga);
                             }
                             callBack.onSuccess(mangaList11);
                         }
-                        catch (Exception e){}
+                        catch (Exception e)
+                        {
+                            System.out.println(e);
+                        }
                     }
                     else{
                         callBack.onFailure(null);
@@ -346,6 +349,18 @@ public class Bus {
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 callBack.onFailure(null);
             }
-        });
+        };
+        return temp;
+    }
+    public void getMangaListByPage(Integer offset
+//            , String title, String author, Integer year
+//            , ArrayList<Tag> included, ArrayList<Tag> excluded
+//            , ArrayList status, ArrayList ids, ArrayList includes
+            , MyCallBack<List<Manga>> callBack) {
+        ApiService.apiservice.getMangaByPage(offset).enqueue(callbackMangaList(callBack));
+    }
+    public void getMangaListRank(Map<String,Object> order
+            , MyCallBack<List<Manga>> callBack) {
+        ApiService.apiservice.getMangaByOrder(order).enqueue(callbackMangaList(callBack));
     }
 }

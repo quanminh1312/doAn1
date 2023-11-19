@@ -18,6 +18,9 @@
             android:name=".User_Page"
             android:exported="false" />
         <activity
+            android:name=".Rank_Page"
+            android:exported="false" />
+        <activity
             android:name=".Tag_Page"
             android:exported="false" />
         <activity

@@ -6,11 +6,15 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
+import java.util.Map;
+
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
+import retrofit2.http.QueryMap;
+
 public interface ApiService {
     Gson gson = new GsonBuilder()
             .setDateFormat("yyyy-MM-dd HH:mm:ss")
@@ -36,7 +40,7 @@ public interface ApiService {
     @GET("at-home/server/{id}")
     Call<JsonObject>getimagechapter(@Path("id") String mangaId);
     @GET("manga")
-    Call<JsonObject>getMangaId(@Query("offset") Integer offset
+    Call<JsonObject>getMangaByPage(@Query("offset") Integer offset
 //            , @Query("title") String title
 //            , @Query("authorOrArtist") String author
 //            , @Query("year") Integer year
@@ -46,6 +50,8 @@ public interface ApiService {
 //            , @Query("ids[]") ArrayList ids
 //            , @Query("includes[]") ArrayList includes
                 );
+    @GET("manga")
+    Call<JsonObject>getMangaByOrder(@QueryMap Map<String, Object> queryParams);
     @GET("author/{id}")
     Call<JsonObject>getAuthor(@Path("id") String authorId);
 }

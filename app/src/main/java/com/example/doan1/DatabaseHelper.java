@@ -14,14 +14,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_USERNAME = "username";
     private static final String COLUMN_PASSWORD = "password";
     private static final String COLUMN_EMAIL = "email";
+    private static final String CREATE_TABLE =
+            "CREATE TABLE " + TABLE_NAME + " (" +
+                    COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,  " +
+                    COLUMN_USERNAME + " TEXT, " +
+                    COLUMN_PASSWORD + " TEXT" +
+                    COLUMN_PASSWORD + " TEXT);" ;
     public DatabaseHelper(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db){
-        String createTableQuery = "CREATE TABLE "+ TABLE_NAME +" ("+COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "+COLUMN_USERNAME+" TEXT, "+COLUMN_PASSWORD+" TEXT, "+COLUMN_EMAIL+" TEXT)";
-        db.execSQL(createTableQuery);
+        db.execSQL(CREATE_TABLE);
     }
     @Override
     public void onUpgrade(SQLiteDatabase db,int oldVersion, int newVersion){

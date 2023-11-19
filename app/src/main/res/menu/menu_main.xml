@@ -17,10 +17,10 @@
         <menu>
             <item
                 android:id="@+id/tag_item"
-                android:title="Tìm Kiếm"/>
+                android:title="Thể Loại" />
             <item
                 android:id="@+id/rank_item"
-                android:title="Xếp hạng"/>
+                android:title="Xếp hạng_ top 10" />
             <item
                 android:id="@+id/history_item"
                 android:title="Lịch sử"/>

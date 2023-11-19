@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent_reg);
             return true;
         } else if (id == R.id.tag_item) {
-            // Handle the "Tìm Kiếm" item click
+            // Handle the "Thể loại" item click
             Intent intent_tag = new Intent(MainActivity.this, Tag_Page.class);
             startActivity(intent_tag);
             return true;
@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
         listView.setAdapter(adapter);
     }
     private void GetMangaByPage(int page) {
-        bus.getManga_list(page, null, null, null, null, null, null, null, null, new MyCallBack<List<Manga>>() {
+        bus.getMangaListByPage(page, new MyCallBack<List<Manga>>() {
             @Override
             public void onSuccess(List<Manga> result) {
                 MangaByPage = new ArrayList<>(result);
