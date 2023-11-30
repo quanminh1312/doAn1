@@ -1,0 +1,42 @@
+<!-- list_item.xml -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/image_view"
+        android:layout_width="110dp"
+        android:layout_height="match_parent"
+        android:src="@drawable/manga1"
+        android:contentDescription="TODO" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="110dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/text_view_label2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Name:"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/text_view_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/Login_item"
+        android:title="Đăng Nhập"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/register_item"
+        android:title="Đăng Ký"
+        app:showAsAction="always"/>
+   <item
+        android:id="@+id/menu_overflow"
+        android:icon="@drawable/menu_icon"
+        android:orderInCategory="101"
+        android:title="Option">
+        <menu>
+            <item
+                android:id="@+id/tag_item"
+                android:title="Thể Loại" />
+            <item
+                android:id="@+id/rank_item"
+                android:title="Xếp hạng" />
+            <item
+                android:id="@+id/history_item"
+                android:title="Lịch sử"/>
+        </menu>
+    </item>
+</menu>
