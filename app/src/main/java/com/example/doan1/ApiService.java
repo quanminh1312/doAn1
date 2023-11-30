@@ -5,8 +5,6 @@ import retrofit2.http.Path;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-
-import java.util.List;
 import java.util.Map;
 
 import retrofit2.Call;

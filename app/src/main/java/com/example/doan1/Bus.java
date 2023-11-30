@@ -173,7 +173,6 @@ public class Bus {
                             tags.get(i).setName(name);
                         }
                         manga.getAttributes().setTags(tags);
-
                         //get cover
                         for (int j = 0; j < relationShip.size(); j++) {
                             JsonObject object = relationShip.get(j).getAsJsonObject();
@@ -188,7 +187,6 @@ public class Bus {
                             String name = attribute.get("title").getAsJsonObject().get("en").getAsString();
                             manga.setName(name);
                         } catch (Exception e){}
-
                         callBack.onSuccess(manga);
                     }
                 }

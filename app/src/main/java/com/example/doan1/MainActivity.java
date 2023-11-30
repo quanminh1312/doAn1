@@ -24,7 +24,6 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
-
     private ArrayList<User_Page> userList;
     ListView listView;
     Button button, button2;
